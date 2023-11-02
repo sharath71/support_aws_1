@@ -6,7 +6,7 @@ module "tf_vpc" {
              }
 } 
 module "eks_cluster_1" {
-  source                               = "./code"
+  source                               = "./eks"
   location                             = "eu-north-1"                                            ## Mandatory
   eks_cluster_name                     = "JHC-Assignment"                                          ## Mandatory
   count                                = "3"
@@ -16,7 +16,7 @@ module "eks_cluster_1" {
   cluster_endpoint_private_access      = true            ## Optional 
   cluster_endpoint_public_access       = true            ## Optional
   cluster_endpoint_public_access_cidrs = null            ## Optional 
-  #service_ipv4_cidr                   = "172.31.0.0/16" ## Optional 
+  service_ipv4_cidr                   = module.tf_vpc.vpc_id ## Optional 
   log_retention_in_days                = 7               ## Optional
   ##Node Group
   node_desired_size    = 2             ## Optional 
@@ -60,7 +60,7 @@ module "jhc_rds" {
       protocol        = "tcp"
       cidr_blocks     = []
       description     = "allow ssh within organization"
-      security_groups = [module.eks_cluster_1.security_group_id]
+      security_groups = [module.eks_cluster_1[0].security_group_id]
     }
   }
 }
