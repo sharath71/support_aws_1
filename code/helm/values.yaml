@@ -1,0 +1,8 @@
+# values.yaml
+replicaCount: 1
+image:
+  repository: sharath71/sharath71-bottomline
+  tag: bottomlinet3
+service:
+  name: hello-world-app
+  port: 8080
